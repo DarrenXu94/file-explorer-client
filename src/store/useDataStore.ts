@@ -21,6 +21,12 @@ export const useDataStore = defineStore("data", {
       );
       return folder ? folder.items : [];
     },
+    getSelectedFolderName: (state) => {
+      const folder = state.fileTree.files.find(
+        (file) => file.id === state.selectedFolder
+      );
+      return folder ? folder.name : "Root";
+    },
   },
   actions: {
     async loadFiles() {

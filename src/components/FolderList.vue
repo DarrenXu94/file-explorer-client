@@ -34,4 +34,9 @@ const orderedFolders = computed(() => {
   padding: 0;
   margin: 0;
 }
+@media (max-width: 768px) {
+  h2 {
+    padding: 0 20px;
+  }
+}
 </style>

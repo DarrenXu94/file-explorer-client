@@ -30,10 +30,26 @@ const props = defineProps<Props>();
   margin: 0;
   padding: 0;
   display: flex;
+  flex-wrap: wrap;
 }
 
 .file-list li {
   list-style: none;
   padding: 20px;
+}
+
+@media (max-width: 768px) {
+  h2 {
+    padding: 0 20px;
+  }
+
+  .file-list ul {
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .file-list li {
+    padding: 0;
+  }
 }
 </style>
