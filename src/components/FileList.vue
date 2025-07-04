@@ -2,7 +2,7 @@
   <h2>Select a workout</h2>
   <div class="file-list">
     <ul>
-      <li v-for="file in files" :key="file.id">
+      <li v-for="file in orderedFiles" :key="file.id">
         <File :file="file" />
       </li>
     </ul>
@@ -10,6 +10,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import type { Item } from "../types/files";
 
 import File from "./File.vue";
@@ -19,6 +20,17 @@ interface Props {
 }
 
 const props = defineProps<Props>();
+
+const FILE_ORDER = ["Upper A", "Lower A", "Upper B", "Lower B"];
+
+const orderedFiles = computed(() => {
+  // Sort files based on the predefined order
+  return props.files.sort((a, b) => {
+    const indexA = FILE_ORDER.indexOf(a.name);
+    const indexB = FILE_ORDER.indexOf(b.name);
+    return indexA - indexB;
+  });
+});
 </script>
 
 <style scoped>

@@ -12,7 +12,10 @@
       <div class="file-list-wrapper" v-if="dataStore.selectedFolder">
         <FileList :files="dataStore.getFilesFromSelectedFolder" />
         <div class="button-wrapper">
-          <a class="button-link" :href="selectedUrl"
+          <a
+            class="button-link"
+            :href="getSelectedUrl(dataStore.selectedFolder)"
+            target="_blank"
             >Go to folder {{ dataStore.getSelectedFolderName }}</a
           >
         </div>
@@ -27,12 +30,15 @@ import { useDataStore } from "../store/useDataStore";
 import FolderList from "../components/FolderList.vue";
 
 import FileList from "../components/FileList.vue";
+import { computed } from "vue";
 
 const dataStore = useDataStore();
 
 await dataStore.loadFiles();
 
-const selectedUrl = `https://drive.google.com/drive/u/0/folders/${dataStore.selectedFolder}`;
+const getSelectedUrl = (folderId: string) => {
+  return `https://drive.google.com/drive/u/0/folders/${folderId}`;
+};
 </script>
 
 <style scoped>
