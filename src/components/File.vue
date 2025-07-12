@@ -1,12 +1,26 @@
 <template>
-  <a :href="url" target="_blank" class="file-card">
+  <button class="file-card" @click="showDialog">
     <div class="file-card__icon">
       <img :src="icon" alt="" />
     </div>
     <div class="file-card__name">
       {{ file.name }}
     </div>
-  </a>
+  </button>
+  <dialog ref="dialog" closedby="any">
+    <div class="file-dialog">
+      <div class="file-dialog-close">
+        <button @click="closeDialog" class="close-button" aria-label="Close">
+          &times;
+        </button>
+      </div>
+      <FileDialogContent :fid="file.id" v-if="openedModal" />
+
+      <div v-if="!dataStore.fileData[file.id]">Loading</div>
+
+      <a :href="url" target="_blank"> Go to file </a>
+    </div>
+  </dialog>
 </template>
 
 <script setup lang="ts">
@@ -14,16 +28,42 @@ import type { Item } from "../types/files";
 
 import lower from "../components/icons/lower.svg";
 import upper from "../components/icons/upper.svg";
+import { ref } from "vue";
+
+import { useDataStore } from "../store/useDataStore";
+import FileDialogContent from "./FileDialogContent.vue";
 
 interface Props {
   file: Item;
 }
 
+const dataStore = useDataStore();
+
 const props = defineProps<Props>();
+
+const openedModal = ref(false);
 
 const url = `https://docs.google.com/spreadsheets/d/${props.file.id}/edit?gid=0#gid=0`;
 
 const icon = props.file.name.toLowerCase().includes("lower") ? lower : upper;
+
+const dialog = ref<HTMLDialogElement | null>(null);
+
+const showDialog = () => {
+  if (dialog.value) {
+    dialog.value.showModal();
+
+    openedModal.value = true;
+  }
+};
+
+const closeDialog = () => {
+  if (dialog.value) {
+    dialog.value.close();
+
+    openedModal.value = false;
+  }
+};
 </script>
 
 <style scoped>
@@ -85,5 +125,52 @@ const icon = props.file.name.toLowerCase().includes("lower") ? lower : upper;
   text-overflow: ellipsis;
   white-space: nowrap;
   width: 100%;
+}
+
+dialog {
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  max-width: 90%;
+  width: fit-content;
+  background-color: #fff;
+  color: #333;
+}
+
+dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.file-dialog {
+  padding: 0.5rem 2rem;
+}
+
+.file-dialog-close {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+.close-button {
+  background-color: #eee;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 1.25rem;
+  line-height: 1;
+  text-align: center;
+  cursor: pointer;
+  color: #333;
+  transition: background-color 0.2s ease;
+}
+
+.close-button:hover {
+  background-color: #ddd;
+}
+
+.close-button:focus {
+  outline: 2px solid #4a90e2;
+  outline-offset: 2px;
 }
 </style>

@@ -12,3 +12,7 @@ export interface Item {
   id: string;
   name: string;
 }
+
+export interface FileData {
+  data: string[][];
+}

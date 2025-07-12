@@ -1,8 +1,11 @@
 import { defineStore } from "pinia";
-import type { Files } from "../types/files";
+import type { FileData, Files } from "../types/files";
 
-const fetchingUrl =
-  "https://lambent-sunburst-2fde44.netlify.app/.netlify/functions/getStructure";
+const BASE_URL = "https://lambent-sunburst-2fde44.netlify.app";
+
+const FILE_STRUCTURE_URL = `${BASE_URL}/.netlify/functions/getStructure`;
+
+const FILE_DATA_URL = `${BASE_URL}/.netlify/functions/readFile?id=`;
 
 export const useDataStore = defineStore("data", {
   state: () => ({
@@ -10,6 +13,7 @@ export const useDataStore = defineStore("data", {
     loaded: false,
     loading: false,
     selectedFolder: null as string | null,
+    fileData: {} as Record<string, FileData>,
   }),
   getters: {
     getFilesFromSelectedFolder: (state) => {
@@ -29,13 +33,29 @@ export const useDataStore = defineStore("data", {
     },
   },
   actions: {
+    async loadFileData(fileId: string) {
+      if (this.fileData[fileId]) {
+        return; // Data already loaded
+      }
+
+      try {
+        const response = await fetch(`${FILE_DATA_URL}${fileId}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data: FileData = await response.json();
+        this.fileData[fileId] = data;
+      } catch (error) {
+        console.error("Error fetching file data:", error);
+      }
+    },
     async loadFiles() {
       if (this.loaded) {
         return;
       }
       this.loading = true;
       try {
-        const response = await fetch(fetchingUrl);
+        const response = await fetch(FILE_STRUCTURE_URL);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }

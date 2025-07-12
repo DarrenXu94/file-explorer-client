@@ -30,7 +30,6 @@ import { useDataStore } from "../store/useDataStore";
 import FolderList from "../components/FolderList.vue";
 
 import FileList from "../components/FileList.vue";
-import { computed } from "vue";
 
 const dataStore = useDataStore();
 
