@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="file-dialog-table">
     <table>
       <thead>
         <tr>
@@ -33,8 +33,13 @@ const tableRows = props.data.data.slice(1) || [];
 </script>
 
 <style scoped>
+.file-dialog-table {
+  overflow: auto;
+}
 table {
   border-spacing: 0;
+  /* table-layout: fixed;
+  width: 100%; */
 }
 
 td,

@@ -16,9 +16,14 @@
       </div>
       <FileDialogContent :fid="file.id" v-if="openedModal" />
 
-      <div v-if="!dataStore.fileData[file.id]">Loading</div>
+      <div class="file-dialog-spinner" v-if="!dataStore.fileData[file.id]">
+        <Spinner />
+        <div>Loading file data...</div>
+      </div>
 
-      <a :href="url" target="_blank"> Go to file </a>
+      <a v-if="dataStore.fileData[file.id]" :href="url" target="_blank">
+        Go to file
+      </a>
     </div>
   </dialog>
 </template>
@@ -32,6 +37,8 @@ import { ref } from "vue";
 
 import { useDataStore } from "../store/useDataStore";
 import FileDialogContent from "./FileDialogContent.vue";
+
+import Spinner from "./Spinner.vue";
 
 interface Props {
   file: Item;
@@ -137,6 +144,13 @@ dialog {
   color: #333;
 }
 
+@media (max-width: 768px) {
+  dialog {
+    height: 100%;
+    width: 100%;
+  }
+}
+
 dialog::backdrop {
   background-color: rgba(0, 0, 0, 0.4);
 }
@@ -149,6 +163,13 @@ dialog::backdrop {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 1rem;
+}
+
+.file-dialog-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .close-button {
