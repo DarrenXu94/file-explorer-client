@@ -38,5 +38,10 @@ const orderedFolders = computed(() => {
   h2 {
     padding: 0 20px;
   }
+
+  .folder-list {
+    max-height: 30vh;
+    overflow-y: auto;
+  }
 }
 </style>

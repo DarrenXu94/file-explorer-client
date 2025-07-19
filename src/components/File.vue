@@ -144,13 +144,6 @@ dialog {
   color: #333;
 }
 
-@media (max-width: 768px) {
-  dialog {
-    height: 100%;
-    width: 100%;
-  }
-}
-
 dialog::backdrop {
   background-color: rgba(0, 0, 0, 0.4);
 }
@@ -193,5 +186,16 @@ dialog::backdrop {
 .close-button:focus {
   outline: 2px solid #4a90e2;
   outline-offset: 2px;
+}
+
+@media (max-width: 768px) {
+  dialog {
+    height: 100%;
+    width: 100%;
+  }
+
+  .file-dialog {
+    padding: 0;
+  }
 }
 </style>
