@@ -51,6 +51,11 @@ const handleScroll = (event: Event) => {
   padding: 0;
   margin: 0;
 }
+
+.scroll-more {
+  display: none;
+}
+
 @media (max-width: 768px) {
   h2 {
     padding: 0 20px;
@@ -60,42 +65,43 @@ const handleScroll = (event: Event) => {
     max-height: 30vh;
     overflow-y: auto;
   }
-}
 
-.scroll-more {
-  text-align: center;
-  padding: 1rem;
-  color: #555;
-  font-size: 0.9rem;
-  font-family: sans-serif;
-  position: relative;
-  animation: fadeIn 1s ease-out;
-}
-
-.scroll-more .arrow {
-  display: block;
-  font-size: 1.5rem;
-  animation: bounce 1.5s infinite;
-}
-
-@keyframes bounce {
-  0%,
-  100% {
-    transform: translateY(0);
+  .scroll-more {
+    display: block;
+    text-align: center;
+    padding: 1rem;
+    color: #555;
+    font-size: 0.9rem;
+    font-family: sans-serif;
+    position: relative;
+    animation: fadeIn 1s ease-out;
   }
-  50% {
-    transform: translateY(5px);
-  }
-}
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
+  .scroll-more .arrow {
+    display: block;
+    font-size: 1rem;
+    animation: bounce 1.5s infinite;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  @keyframes bounce {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(5px);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }
 </style>
