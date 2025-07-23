@@ -1,16 +1,21 @@
 <template>
   <h2>Select a training block</h2>
-  <div class="folder-list">
+  <div class="folder-list" @scroll="handleScroll">
     <ul>
       <li v-for="folder in orderedFolders" :key="folder.id">
         <Folder :folder="folder" />
       </li>
     </ul>
   </div>
+  <div class="scroll-more" v-show="!isAtBottom">
+    <span class="arrow">&#x25BC;</span>
+    <!-- Downward arrow -->
+    <span class="text">Scroll for more</span>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import type { FilesClass } from "../types/files";
 import Folder from "./Folder.vue";
 
@@ -26,6 +31,18 @@ const orderedFolders = computed(() => {
     (a, b) => new Date(b.name).getTime() - new Date(a.name).getTime()
   );
 });
+
+const isAtBottom = ref(false);
+
+const handleScroll = (event: Event) => {
+  const target = event.target as HTMLElement;
+  if (target.scrollTop + target.clientHeight >= target.scrollHeight) {
+    // Load more folders or perform an action when scrolled to the bottom
+    isAtBottom.value = true;
+  } else {
+    isAtBottom.value = false;
+  }
+};
 </script>
 
 <style scoped>
@@ -42,6 +59,43 @@ const orderedFolders = computed(() => {
   .folder-list {
     max-height: 30vh;
     overflow-y: auto;
+  }
+}
+
+.scroll-more {
+  text-align: center;
+  padding: 1rem;
+  color: #555;
+  font-size: 0.9rem;
+  font-family: sans-serif;
+  position: relative;
+  animation: fadeIn 1s ease-out;
+}
+
+.scroll-more .arrow {
+  display: block;
+  font-size: 1.5rem;
+  animation: bounce 1.5s infinite;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 </style>
